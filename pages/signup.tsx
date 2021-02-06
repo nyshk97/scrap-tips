@@ -1,38 +1,26 @@
-import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useAuthentication } from '../hooks/authentication'
+import Link from 'next/link'
 import firebase from 'firebase/app'
-import { atom, useRecoilState } from 'recoil'
-import { User } from '../models/User'
 
-const userState = atom<User>({
-  key: 'user',
-  default: null,
-})
-
-export default function Login() {
+export default function SignUp() {
   const router = useRouter()
-  const [user, setUser] = useRecoilState(userState)
+  const { user } = useAuthentication()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
-  firebase.auth().onAuthStateChanged(function (firebaseUser) {
-    if (firebaseUser) {
-      const loginUser: User = {
-        uid: firebaseUser.uid,
-        name: 'hoge',
-      }
-      setUser(loginUser)
-      router.push('/')
-    } else {
-      setUser(null)
-    }
-  })
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      user && router.push('/')
+    })
+  }, [])
 
-  const logIn = async (e) => {
+  const createUser = async (e) => {
     e.preventDefault()
     try {
-      await firebase.auth().signInWithEmailAndPassword(email, password)  
+      await firebase.auth().createUserWithEmailAndPassword(email, password)
+      router.push('/login')
     } catch (err) {
       alert(err.message)
     }
@@ -40,8 +28,8 @@ export default function Login() {
 
   return (
     <div className="wrapper">
-      <h1>Login</h1>
-      <form className="auth" onSubmit={logIn}>
+      <h1>Sign up</h1>
+      <form className="auth" onSubmit={createUser}>
         <div>
           <label htmlFor="email" className="auth-label">
             Email:{' '}
@@ -65,11 +53,11 @@ export default function Login() {
           />
         </div>
         <button className="auth-btn" type="submit">
-          Login
+          SignUp
         </button>
       </form>
-      <Link href="/signup">
-        <a className="auth-link">signup</a>
+      <Link href="/login">
+        <a className="auth-link">Login</a>
       </Link>
     </div>
   )
