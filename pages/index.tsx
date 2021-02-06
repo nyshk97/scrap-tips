@@ -1,7 +1,9 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import { useAuthentication } from '../hooks/authentication'
 
 export default function Home() {
+  const { user } = useAuthentication()
   return (
     <div className={styles.container}>
       <Head>
