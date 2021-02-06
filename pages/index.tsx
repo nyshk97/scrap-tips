@@ -3,7 +3,8 @@ import styles from '../styles/Home.module.css'
 import { useAuthentication } from '../hooks/authentication'
 
 export default function Home() {
-  const { user } = useAuthentication()
+  const user = useAuthentication()
+  console.log(user)
   return (
     <div className={styles.container}>
       <Head>
@@ -12,6 +13,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+        <h1>現在{user.uid}としてログインしています</h1>
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>

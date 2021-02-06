@@ -1,18 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useAuthentication } from '../hooks/authentication'
 import Link from 'next/link'
 import firebase from 'firebase/app'
 
 export default function SignUp() {
   const router = useRouter()
-  const { user } = useAuthentication()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
-      user && router.push('/')
+      user && router.push('/login')
     })
   }, [])
 
@@ -20,7 +18,6 @@ export default function SignUp() {
     e.preventDefault()
     try {
       await firebase.auth().createUserWithEmailAndPassword(email, password)
-      router.push('/login')
     } catch (err) {
       alert(err.message)
     }

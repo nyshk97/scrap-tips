@@ -17,5 +17,5 @@ export function useAuthentication() {
     }
   }, [])
 
-  return { user }
+  return user
 }

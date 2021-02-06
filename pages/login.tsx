@@ -1,7 +1,7 @@
+import firebase from 'firebase/app'
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import firebase from 'firebase/app'
 import { atom, useRecoilState } from 'recoil'
 import { User } from '../models/User'
 

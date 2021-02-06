@@ -1,4 +1,4 @@
-export interface User {
+export interface Scrap {
   uid: string
   content: string
 }
